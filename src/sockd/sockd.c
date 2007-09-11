@@ -6,7 +6,7 @@
 extern char *socks_version;
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.68 2002/07/27 03:55:34 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.69 2003/02/27 17:10:16 lamont Exp $";
 static char *copyright="@(#)Copyright Hewlett-Packard Company, 1997-2000.";
 #endif
 
@@ -72,10 +72,11 @@ int main(int argc, char **argv)
     rp.rlim_max=0x7fffffff;
     setrlimit(RLIMIT_CORE,&rp);
 
-    while ((c=getopt(argc,argv,":c:d:l:w:"))!=EOF) switch(c) {
+    while ((c=getopt(argc,argv,":c:d:l:vw:"))!=EOF) switch(c) {
 	case 'c':	configFile=strdup(optarg); break;
 	case 'd':	debug=strtol(optarg,(char**)NULL,0); break;
 	case 'l':	listenTries=strtol(optarg,(char**)NULL,0); break;
+	case 'v':	fprintf(stderr, "%s \n", socks_version+4); exit(0);
 	case 'w':	avgClientWeight=(float)strtol(optarg,(char**)NULL,0)/100.0; break;
 	case ':':
 	case '?':
