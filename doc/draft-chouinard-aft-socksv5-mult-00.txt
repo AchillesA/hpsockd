@@ -1,0 +1,5 @@
+
+
+This Internet-Draft <draft-chouinard-aft-socksv5-mult-00.txt> 
+has been replaced by
+another Internet-Draft <draft-ietf-aft-mcast-fw-traversal-00.txt>

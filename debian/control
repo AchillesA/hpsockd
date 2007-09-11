@@ -1,0 +1,12 @@
+Source: hpsockd
+Section: net
+Priority: extra
+Maintainer: LaMont Jones <lamont@debian.org>
+Build-Depends: libdb3-dev, debhelper ( >= 2.0), flex, byacc
+Standards-Version: 3.1.1.1
+
+Package: hpsockd
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: HP SOCKS server.
+ Provides a SOCKS v5 server, with v4 support.
