@@ -1,3 +1,9 @@
+hpsockd (0.14) unstable; urgency=low
+
+  * Better handle short udp packets
+
+ -- LaMont Jones <lamont@debian.org>  Wed, 10 Nov 2004 14:33:25 -0700
+
 hpsockd (0.13) unstable; urgency=low
 
   * Use db4.2 instead of db4.1.  Closes: #263234

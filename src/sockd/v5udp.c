@@ -268,6 +268,12 @@ void v5InboundUdpReq(fdInfoType *info,void *buf,int len,unsigned int flags,const
 	return;
     }
 
+    if (len < headLen) {
+	syslog(LOG_WARNING,"Dropped short packet from [%s].%d",
+		inetNtoa(from->sin_addr.s_addr), ntohs(from->sin_port));
+	return;
+    }
+
     if (req->rsv || req->frag)
 	return;
 
