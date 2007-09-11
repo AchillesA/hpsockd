@@ -4,9 +4,6 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-# This is the debhelper compatability version to use.
-export DH_COMPAT=2
-
 package=hpsockd
 docdir=debian/$(package)/usr/share/doc/$(package)
 sbindir=debian/$(package)/usr/sbin

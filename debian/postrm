@@ -22,6 +22,7 @@ case "$1" in
 
     purge)
 	update-rc.d hpsockd remove >/dev/null
+	rm -f /var/cache/hpsockd/negot_file
         ;;
 
     *)

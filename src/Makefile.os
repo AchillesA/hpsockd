@@ -40,3 +40,7 @@ Linux:
 Linux.debug:
 	${MAKE} CFLAGS="${LINUXDEBUG} ${LINUXCFLAGS}" CLFLAGS="${LINUXCLFLAGS}" all
 
+GNU/kFreeBSD: Linux
+
+GNU/kFreeBSD.debug: Linux.debug
+

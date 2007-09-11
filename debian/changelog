@@ -1,3 +1,14 @@
+hpsockd (0.15) unstable; urgency=low
+
+  * Use libdb 4.6.  Closes: #421941
+  * Support GNU/kFreeBSD.  Closes: #414971
+  * Remove negot_file on purge.  Closes: #328321
+  * Document git repository location
+  * Debhelper 5
+  * Copyright GPLv2
+
+ -- LaMont Jones <lamont@debian.org>  Tue, 11 Sep 2007 12:02:56 -0600
+
 hpsockd (0.14) unstable; urgency=low
 
   * Better handle short udp packets
