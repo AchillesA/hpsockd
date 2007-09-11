@@ -2,7 +2,7 @@
 #include "v5.h"
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5tcp.c,v 0.22 2002/03/28 19:04:27 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5tcp.c,v 0.23 2002/07/27 03:13:21 lamont Exp $";
 #endif
 
 /*
@@ -102,7 +102,7 @@ int v5DoConnect(fdInfoType *client)
     peer->sin=sin;
     peer->TCP_INBOUND=simpleInbound;
     peer->TCP_OUTPUT =simpleOutput;
-    setSelect(outFd,SL_READ|SL_EXCP);
+    setSelect(outFd,SL_EXCP);
     clrSelect(client->fd,SL_READ);
 
     res=connect(outFd,(struct sockaddr*)&sin,sizeof(sin));
@@ -132,9 +132,9 @@ ssize_t	v5ConnectSendReply(int fd, const void *buf,size_t count,unsigned int flg
     peer->TCP_INBOUND=simpleInbound;
 
     res=connect(fd,(struct sockaddr*)&client->sin,sizeof(client->sin));
+    footprint(9,client->fd,errno,0);
 
     memset(&peer->sin,0,sizeof(peer->sin));
-    setSelect(client->fd,SL_READ);
 
     if (res==0 || errno==EISCONN) {
 	sinlen=sizeof(sin);
@@ -144,8 +144,10 @@ ssize_t	v5ConnectSendReply(int fd, const void *buf,size_t count,unsigned int flg
 	res=getpeername(fd,(struct sockaddr*)&peer->sin,&sinlen);
 
 	v5WriteReply(client,&sin,SOCKS5_OK,0);
-	if (client->fd>=0)
+	if (client->fd>=0) {
 	    setSelect(client->fd,SL_READ);
+	    setSelect(fd,SL_READ);
+	}
     } else {
 	v5WriteReply(client,&client->sin,v5ErrnoToResult(errno),0);
 	if (client->fd>=0)

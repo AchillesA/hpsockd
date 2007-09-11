@@ -1,3 +1,10 @@
+hpsockd (0.6.1) unstable; urgency=low
+
+  * don't select peer for reading until the connect completes.  More
+    footprinting.
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 26 Jul 2002 21:12:14 -0600
+
 hpsockd (0.6) unstable; urgency=low
 
   * use anonymous mmap regions for client buffer memory, so that we
