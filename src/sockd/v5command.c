@@ -2,7 +2,7 @@
 #include "v5.h"
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5command.c,v 0.12 2001/02/23 03:09:33 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5command.c,v 0.13 2002/12/17 05:21:22 lamont Exp $";
 #endif
 
 /*
@@ -286,7 +286,7 @@ dest_addr:	switch(conn->req->atyp) {
 	if (escape) {
 	    register char *p;
 	    for (p=escape; *p; p++)
-		if (strchr("$#!`~&*()\"'<>|\\/=",*p)) {
+		if (strchr("{}[]%^;$#!`~&*()\"'<>|\\/=",*p) || *p<=' ') {
 		    if (!warned) {
 			syslog(LOG_WARNING,"Possible shell escape in %s",escape);
 			warned=1;
