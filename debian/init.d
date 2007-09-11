@@ -22,10 +22,14 @@ set -e
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: "
-	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
-		--exec $DAEMON
-	echo "$NAME."
+	if [ -f /etc/hpsockd.conf ]; then
+		echo -n "Starting $DESC: "
+		start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
+			--exec $DAEMON
+		echo "$NAME."
+	else
+		echo "Not starting $DESC: no config file."
+	fi
 	;;
   stop)
 	echo -n "Stopping $DESC: "

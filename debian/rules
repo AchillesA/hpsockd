@@ -73,7 +73,6 @@ binary-arch: build install
 	dh_installcron
 	dh_installmanpages
 	dh_installinfo
-	dh_undocumented hpsockd.8 sdc.1
 	dh_installchangelogs #CHANGELOGS#
 	dh_link
 	dh_strip

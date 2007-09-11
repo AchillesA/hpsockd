@@ -9,4 +9,6 @@ Package: hpsockd
 Architecture: any
 Depends: ${shlibs:Depends}
 Description: HP SOCKS server.
- Provides a SOCKS v5 server, with v4 support.
+ Hpsockd is yet-another SOCKS server, with both version 5 (RFC1928 and
+ others) as well as version 4 support, originally written at
+ Hewlett-Packard Company.

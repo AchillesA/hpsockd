@@ -1,3 +1,10 @@
+hpsockd (0.12) unstable; urgency=low
+
+  * Fix description.  Closes: #135448, #209646
+  * Handle missing config file in init.d better.  Closes: #131618
+
+ -- LaMont Jones <lamont@debian.org>  Sat, 13 Sep 2003 20:11:08 -0600
+
 hpsockd (0.11) unstable; urgency=low
 
   * Remove RFC's from the package.  Closes: #199805
