@@ -1,3 +1,9 @@
+hpsockd (0.9) unstable; urgency=low
+
+  * Fix bad sign assumption.  Closes: #177386
+
+ -- LaMont Jones <lamont@debian.org>  Sun, 19 Jan 2003 07:04:22 -0700
+
 hpsockd (0.8) unstable; urgency=high
 
   * Cleanup ping/traceroute command handling.

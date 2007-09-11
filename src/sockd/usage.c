@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #ifndef __lint
-static char sccsid[]="@(#)$Header: /var/cvs/hpsockd/src/sockd/usage.c,v 0.14 2000/12/08 20:47:24 lamont Exp $";
+static char sccsid[]="@(#)$Header: /var/cvs/hpsockd/src/sockd/usage.c,v 0.15 2003/01/19 14:05:56 lamont Exp $";
 static char *copyright="@(#)Copyright Hewlett-Packard Company, 1997-2000.";
 #endif
 
@@ -181,7 +181,8 @@ const char *ntoa(unsigned long ip)
 
 int main(int argc, char **argv)
 {
-	char		c, *myname;
+	int		c;
+	char		*myname;
 	FILE		*in;
 	extern char	*optarg;
 	extern int	optind;
