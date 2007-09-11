@@ -6,7 +6,7 @@
 extern char *socks_version;
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.69 2003/02/27 17:10:16 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.69 2003/08/29 16:02:30 lamont Exp $";
 static char *copyright="@(#)Copyright Hewlett-Packard Company, 1997-2000.";
 #endif
 

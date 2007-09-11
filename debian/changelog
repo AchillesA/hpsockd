@@ -1,3 +1,9 @@
+hpsockd (0.11) unstable; urgency=low
+
+  * Remove RFC's from the package.  Closes: #199805
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 29 Aug 2003 09:58:12 -0600
+
 hpsockd (0.10) unstable; urgency=low
 
   * Add -v option to print version.
