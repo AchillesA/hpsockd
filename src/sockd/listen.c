@@ -48,14 +48,6 @@ float		avgClientWeight=0.99;
 /* returns -2 (all OK), or -1 (drop the connection) */
 /* recvFunc */
 /* ARGSUSED */
-ssize_t	listenRecv(int fd, void *buf,size_t count,unsigned int flags)
-{
-    register int i;
-    register ssize_t ret=LISTEN_GOTONE;
-    for (i=listenTries; i>0 && ret==LISTEN_GOTONE; i--) {
-	ret=listenRecv1(fd,buf,count,flags);
-    }
-}
 ssize_t	listenRecv1(int fd, void *buf,size_t count,unsigned int flags)
 {
     struct sockaddr_in		sin;
@@ -208,6 +200,14 @@ ssize_t	listenRecv1(int fd, void *buf,size_t count,unsigned int flags)
     setupTimeouts(conn, config.defaults.setupTimeOut ? config.defaults.setupTimeOut : config.defaults.timeOut);
 
     return LISTEN_GOTONE;
+}
+ssize_t	listenRecv(int fd, void *buf,size_t count,unsigned int flags)
+{
+    register int i;
+    register ssize_t ret=LISTEN_GOTONE;
+    for (i=listenTries; i>0 && ret==LISTEN_GOTONE; i--) {
+	ret=listenRecv1(fd,buf,count,flags);
+    }
 }
 
 /****************************************************************************

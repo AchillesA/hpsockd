@@ -2,7 +2,7 @@ Source: hpsockd
 Section: net
 Priority: extra
 Maintainer: LaMont Jones <lamont@debian.org>
-Build-Depends: libdb4.1-dev, debhelper ( >= 2.0), flex, byacc
+Build-Depends: libdb4.2-dev, debhelper ( >= 2.0), flex, byacc
 Standards-Version: 3.1.1.1
 
 Package: hpsockd

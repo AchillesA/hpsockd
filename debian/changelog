@@ -1,3 +1,10 @@
+hpsockd (0.13) unstable; urgency=low
+
+  * Use db4.2 instead of db4.1.  Closes: #263234
+  * Fix gcc-3.4 errors.  Closes: #263236
+
+ -- LaMont Jones <lamont@debian.org>  Sun, 12 Sep 2004 12:01:32 -0600
+
 hpsockd (0.12) unstable; urgency=low
 
   * Fix description.  Closes: #135448, #209646
