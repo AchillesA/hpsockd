@@ -2,7 +2,7 @@
 #include "v5.h"
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5tcp.c,v 0.23 2002/07/27 03:13:21 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/v5tcp.c,v 0.24 2002/07/27 03:55:34 lamont Exp $";
 #endif
 
 /*
@@ -82,7 +82,9 @@ int simpleOutput(fdInfoType *info,void *ubuf,int len,unsigned int flags)
 	clrSelect(info->peer->fd,SL_READ);
 	return 1;
     } else {
-	setSelect(info->peer->fd,SL_READ);
+	if (info->peer->sin.sin_addr.s_addr) {
+	    setSelect(info->peer->fd,SL_READ);
+	}
 	return 0;
     }
 }
@@ -102,7 +104,6 @@ int v5DoConnect(fdInfoType *client)
     peer->sin=sin;
     peer->TCP_INBOUND=simpleInbound;
     peer->TCP_OUTPUT =simpleOutput;
-    setSelect(outFd,SL_EXCP);
     clrSelect(client->fd,SL_READ);
 
     res=connect(outFd,(struct sockaddr*)&sin,sizeof(sin));
@@ -110,6 +111,7 @@ int v5DoConnect(fdInfoType *client)
     if (res==0 || res<0 && errno==EINPROGRESS) {
 	peer->TCP_SEND=v5ConnectSendReply;
 	setSelect(outFd,SL_WRITE);
+	clrSelect(outFd,SL_READ);
     } else {
 	v5ConnectSendReply(outFd,NULL,0,0);  /* just send it now */
     }
@@ -146,7 +148,7 @@ ssize_t	v5ConnectSendReply(int fd, const void *buf,size_t count,unsigned int flg
 	v5WriteReply(client,&sin,SOCKS5_OK,0);
 	if (client->fd>=0) {
 	    setSelect(client->fd,SL_READ);
-	    setSelect(fd,SL_READ);
+	    setSelect(fd,SL_READ|SL_EXCP);
 	}
     } else {
 	v5WriteReply(client,&client->sin,v5ErrnoToResult(errno),0);
@@ -206,7 +208,6 @@ int v5DoBind(fdInfoType *client)
     res=listen(outFd,1);
 
     peer->TCP_RECV=v5BindRecv;
-    setSelect(outFd,SL_READ|SL_EXCP);
 
     return SOCKS5_OK;	/* So far, anyway. */
 }
@@ -253,6 +254,7 @@ ssize_t v5BindRecv(int fd, void *buf,size_t count,unsigned int flags)
 	syslog(LOG_WARNING,"v5BindRecv accept failed: %m");
 	result=v5ErrnoToResult(errno);
     }
+    setSelect(fd,SL_READ|SL_EXCP);
     v5WriteReply(client,&peer->sin,result,0);
     return result==SOCKS5_OK ? -2 : -1;
 }

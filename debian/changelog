@@ -1,7 +1,8 @@
-hpsockd (0.6.1) unstable; urgency=low
+hpsockd (0.7) unstable; urgency=low
 
-  * don't select peer for reading until the connect completes.  More
-    footprinting.
+  * Add more footprinting.
+  * 2.4 select appears to return true for read on non-connected sockets.
+    Avoid that.
 
  -- LaMont Jones <lamont@debian.org>  Fri, 26 Jul 2002 21:12:14 -0600
 

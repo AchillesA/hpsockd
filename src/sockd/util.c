@@ -1,7 +1,7 @@
 #include "sockd.h"
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/util.c,v 0.74 2002/03/28 19:04:27 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/util.c,v 0.75 2002/07/27 03:55:34 lamont Exp $";
 #endif
 
 /*
@@ -421,12 +421,18 @@ void setSelect(int fd, int which)
 {
     bumpHighLow(fd);
 
+#if 0
+    footprint(0xa,fd,which,0);
+#endif
     if (which&SL_READ)  { FD_SET(fd,&readFds);  }
     if (which&SL_WRITE) { FD_SET(fd,&writeFds); }
     if (which&SL_EXCP)  { FD_SET(fd,&excpFds);  }
 }
 void clrSelect(int fd, int which)
 {
+#if 0
+    footprint(0x1a,fd,which,0);
+#endif
     if (which&SL_READ)  { FD_CLR(fd,&readFds);  }
     if (which&SL_WRITE) { FD_CLR(fd,&writeFds); }
     if (which&SL_EXCP)  { FD_CLR(fd,&excpFds);  }

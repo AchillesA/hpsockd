@@ -6,7 +6,7 @@
 extern char *socks_version;
 
 #ifndef __lint
-static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.67 2002/03/28 19:04:26 lamont Exp $";
+static char *vers="@(#)$Header: /var/cvs/hpsockd/src/sockd/sockd.c,v 0.68 2002/07/27 03:55:34 lamont Exp $";
 static char *copyright="@(#)Copyright Hewlett-Packard Company, 1997-2000.";
 #endif
 
@@ -262,6 +262,7 @@ void mainLoop(void)
 		    } 
 		}
 		if (info->peer && !info->out.dataLen) {
+		    footprint(0xb,fd,0,0);
 		    setSelect(info->peer->fd,SL_READ);
 		}
 	    }
