@@ -1,3 +1,9 @@
+hpsockd (0.16) unstable-UNRELEASED; urgency=low
+
+  * Start new release
+
+ -- LaMont Jones <lamont@debian.org>  Wed, 12 Sep 2007 07:30:04 -0600
+
 hpsockd (0.15) unstable; urgency=low
 
   * Use libdb 4.6.  Closes: #421941
