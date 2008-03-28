@@ -1,8 +1,10 @@
-hpsockd (0.16) unstable-UNRELEASED; urgency=low
+hpsockd (0.16) unstable; urgency=low
 
-  * Start new release
+  [Petter Reinholdtsen]
 
- -- LaMont Jones <lamont@debian.org>  Wed, 12 Sep 2007 07:30:04 -0600
+  * init.d: add LSB init stuff.  Closes: #462716
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 28 Mar 2008 07:45:51 -0600
 
 hpsockd (0.15) unstable; urgency=low
 
