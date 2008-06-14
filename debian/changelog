@@ -1,3 +1,9 @@
+hpsockd (0.17) unstable; urgency=low
+
+  * Drop documenation to make the pedants happy.  Closes: #480372
+
+ -- LaMont Jones <lamont@debian.org>  Sat, 14 Jun 2008 09:05:19 -0600
+
 hpsockd (0.16) unstable; urgency=low
 
   [Petter Reinholdtsen]
