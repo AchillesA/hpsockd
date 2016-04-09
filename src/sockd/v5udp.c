@@ -87,9 +87,15 @@ int v5DoUdpAssociate(fdInfoType *client)
 	    return SOCKS5_ADDR_NOT_SUPP;
     }
 
-    memset(&srcSin,0,sizeof(srcSin));
-    srcSin.sin_family=AF_INET;
-    srcSin.sin_addr.s_addr=findRoute(client->sin.sin_addr.s_addr);
+    // Use the same IP this client is connected to
+    // as a relay.
+    socklen_t sns = sizeof(srcSin);
+    if (getsockname(client->fd, &srcSin, &sns)) {
+	syslog(LOG_ERR,"Getsockname on %s:%d failed" ,
+		inetNtoa(clientSin.sin_addr.s_addr),
+		ntohs(clientSin.sin_port));
+	return SOCKS5_ADDR_NOT_SUPP;
+    }
     srcSin.sin_port=0;
 
     inFd=createSocket(AF_INET,SOCK_DGRAM,0);
@@ -130,7 +136,7 @@ int v5DoUdpAssociate(fdInfoType *client)
     in->peer=out, out->peer=in;
     in->flags=FD_IS_CLIENT|FD_IS_UDP;
     out->flags=FD_IS_UDP;
-    in->sin=clientSin,		memset(&out->sin,0,sizeof(out->sin));
+    in->sin=clientSin,		out->sin=dstSin;
     in->fd=inFd,		out->fd=outFd;
 
     setSocketBuffer(out->fd,conn->bufSize);
@@ -148,22 +154,14 @@ int v5DoUdpAssociate(fdInfoType *client)
 	m="v5DoUdpAssoc inside bind([%s].%d) failed: %m";
 	mSin=&srcSin;
 	goto bailout;
-    }
-
-    res=bind(outFd,(struct sockaddr*)&dstSin,sizeof(dstSin));
-
-    if (res<0) {
-	m="v5DoUdpAssoc outside bind([%s].%d) failed: %m";
-	mSin=&dstSin;
-	goto bailout;
     } else {
-	int len=sizeof(srcSin);
-	res=getsockname(inFd,(struct sockaddr*)&srcSin,&len);
-    } 
-    
-    if (res<0) {
-	m="v5DoUdpAssoc inside getsockname failed: %m";
-	goto bailout;
+       /* Grab relay port number information */
+       int len=sizeof(srcSin);
+       res=getsockname(inFd,(struct sockaddr*)&srcSin,&len);
+       if (res<0) {
+              m="v5DoUdpAssoc inside getsockname failed: %m";
+              goto bailout;
+       }
     }
 
     setSelect(in->fd,SL_READ|SL_EXCP);
@@ -283,7 +281,6 @@ void v5InboundUdpReq(fdInfoType *info,void *buf,int len,unsigned int flags,const
     memcpy(validateReq,req,headLen);
     /* Split request into request header and data */
 
-    /* XXX - check if this is the same destination as the last one... */
     ret=validate(info,VL_ISUDPREQ,&validateReq);
     if (ret==SOCKS5_TRY_AGAIN) {
 	info->in.bufStart=buf;
@@ -357,8 +354,19 @@ void simpleInboundUdp(fdInfoType *info,void *buf,int len,unsigned int flags,cons
  ***************************************************************************/
 void simpleOutputUdp(fdInfoType *info,void *buf,int len,unsigned int flags,const void *to, int toLen)
 {
+    int res;
+
     if (info->conn->ruleFlags&RF_LOG_RECORDS_PEER)
 	dumpUDPData(info,buf,len,"OP");
+
+    /* If not already bound, lookup outgoing route and bind */
+    if (info->sin.sin_addr.s_addr == INADDR_ANY) {
+        info->sin.sin_addr.s_addr = findRoute(((struct sockaddr_in *)to)->sin_addr.s_addr);
+        res=bind(info->fd,(struct sockaddr*)&info->sin,sizeof(info->sin));
+        if (res != 0) {
+            syslog(LOG_ERR, "%m binding outgoing socket", res);
+        }
+    }
 
     (void)info->UDP_SENDTO(info->fd,buf,len,flags,to,toLen);
     updateTime(info,out,len,now);
