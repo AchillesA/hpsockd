@@ -355,13 +355,16 @@ void simpleInboundUdp(fdInfoType *info,void *buf,int len,unsigned int flags,cons
 void simpleOutputUdp(fdInfoType *info,void *buf,int len,unsigned int flags,const void *to, int toLen)
 {
     int res;
+    in_addr_t route;
 
     if (info->conn->ruleFlags&RF_LOG_RECORDS_PEER)
 	dumpUDPData(info,buf,len,"OP");
 
+    route = findRoute(((struct sockaddr_in *)to)->sin_addr.s_addr);
+
     /* If not already bound, lookup outgoing route and bind */
-    if (info->sin.sin_addr.s_addr == INADDR_ANY) {
-        info->sin.sin_addr.s_addr = findRoute(((struct sockaddr_in *)to)->sin_addr.s_addr);
+    if (info->sin.sin_addr.s_addr != route) {
+        info->sin.sin_addr.s_addr = route;
         res=bind(info->fd,(struct sockaddr*)&info->sin,sizeof(info->sin));
         if (res != 0) {
             syslog(LOG_ERR, "%m binding outgoing socket", res);
